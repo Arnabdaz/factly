@@ -1,4 +1,4 @@
-# [Factly : share and learn new facts daily](https://factly.netlify.app)
+# [<img src="https://raw.githubusercontent.com/Arnabdaz/djpeepo/main/factlylogobg.png" width="32px" /> Factly : share and learn new facts daily](https://factly.netlify.app)
 
 <p style="font-size: 16px">This project is a small full stack web application ... in this web app you can share facts with other people and learn new facts which are being posted by other people</p>
 
@@ -44,13 +44,13 @@ Having created the website from scratch, I learned how to create and implement f
 
 ## GITHUB REPO:
 
-- ## [FACTLY REPO](https://github.com/)
+- ## [FACTLY REPO <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="32px" />](https://github.com/Arnabdaz/factly)
 
 ## LIVE LINKS:
 
 - ## [Netlify <img src="https://www.vectorlogo.zone/logos/netlify/netlify-icon.svg" height="32px"/>](https://factly.netlify.app)
 - ## [Vercel <img src="https://assets.vercel.com/image/upload/front/assets/design/components/triangle.gif" height="32px"/> ](https://factly.vercel.app)
-- ## [factly.tk <img src="https://github.com/Arnabdaz/factly/blob/main/public/logo512.png" />](https://factly.tk)
+- ## [factly.tk <img src="https://raw.githubusercontent.com/Arnabdaz/djpeepo/main/factlylogobg.png" width="32px" />](https://factly.tk)
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>
