@@ -1,3 +1,19 @@
+@font-face {
+  font-family: "Sono";
+  src: local("Sono"),
+    url("/public/SonoVariable.woff2") format("woff2-variations");
+  font-style: normal;
+  font-weight: 400 800;
+}
+
+@font-face {
+  font-family: "Coiny";
+  src: local("Coiny"),
+    url("/public/coiny-regular-webfont.woff") format("woff2-variations");
+  font-style: normal;
+  font-weight: 400 800;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +23,7 @@
 body {
   background-color: #111827;
   color: #e5e7eb;
-  font-family: "Sono", sans-serif;
+  font-family: "Sono", monospace, sans-serif;
   padding: 32px 64px 0;
 
   -ms-overflow-style: none; /* Internet Explorer 10+ */
@@ -36,6 +52,20 @@ body::-webkit-scrollbar {
   grid-template-columns: 250px 1fr;
   gap: 48px;
   height: calc(100vh - 18.4vh);
+}
+
+aside {
+  overflow: scroll;
+  padding: 10px 20px;
+
+  border-radius: 30px;
+
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+aside::-webkit-scrollbar {
+  display: none; /* Chrome,Safari */
 }
 
 section {
@@ -129,7 +159,7 @@ h1 {
 .tag {
   text-transform: uppercase;
   font-size: 14px;
-  font-family: "Coiny", sans-serif;
+  font-family: "Coiny", monospace, sans-serif;
   padding-top: 3px;
   padding-left: 10px;
   padding-right: 10px;
@@ -189,7 +219,7 @@ ul {
 
 .btn {
   border: none;
-  font-family: "Coiny", sans-serif;
+  font-family: "Coiny", monospace, sans-serif;
   line-height: 1;
   text-transform: uppercase;
   font-size: 17px;
@@ -211,13 +241,14 @@ ul {
 }
 
 .btn-all-categories {
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   width: 100%;
 }
 
 .btn-category {
   width: 100%;
   background-image: none;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.75);
 }
 
 /* FORM */
@@ -302,6 +333,10 @@ ul {
 
   section {
     overflow: visible;
+  }
+  aside {
+    overflow: visible;
+    padding: 0px;
   }
 
   .btn {

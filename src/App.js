@@ -12,6 +12,14 @@ const CATEGORIES = [
   { name: "news", color: "#B05B3B" },
 ];
 
+const SORTBY = [
+  { name: "creation time", value: "created_at", color: "#3b82f6" },
+  { name: "category", value: "category", color: "#8b5cf6" },
+  { name: "👍 Interesting", value: "votesInteresting", color: "#db2777" },
+  { name: "🤯 Mindblowing", value: "votesMindblowing", color: "#f97316" },
+  { name: "⛔ Incorrect", value: "votesFalse", color: "#eab308" },
+];
+
 // function Counter() {
 //   const [count, setCount] = useState(0);
 
@@ -39,6 +47,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(false); // for showing loading... logo as long as loading
   const [errorLoading, setErrorLoading] = useState(false); // for showing error in loading
   const [CurrentCategory, setCurrentCategory] = useState("all"); // for filtering facts according to category
+  const [sortBy, setSortBy] = useState("created_at"); // for sorting facts according to selected sort
+  const [sortOrder, setSortOrder] = useState(false); // for sorting facts as ascending or descending order
 
   useEffect(
     function () {
@@ -48,12 +58,12 @@ function App() {
         let query = supabase.from("facts").select("*");
 
         if (CurrentCategory !== "all") {
-          query = query.eq("category", CurrentCategory);
+          query = query.eq("category", CurrentCategory); // add current category filter
         }
 
-        const { data: facts, error } = await query
-          .order("votesInteresting", { ascending: false })
-          .limit(1000);
+        query = query.order(sortBy, { ascending: sortOrder }); // add sortby and sort order filter
+
+        const { data: facts, error } = await query.limit(1000);
 
         if (!error) setFacts(facts);
         else setErrorLoading(true);
@@ -61,7 +71,7 @@ function App() {
       }
       getFacts();
     },
-    [CurrentCategory]
+    [CurrentCategory, sortBy, sortOrder]
   );
 
   return (
@@ -74,7 +84,12 @@ function App() {
       {/* <Counter /> */}
 
       <main className="main">
-        <CategoryList setCurrentCategory={setCurrentCategory} />
+        <CategoryList
+          setCurrentCategory={setCurrentCategory}
+          setSortBy={setSortBy}
+          sortOrder={sortOrder}
+          setSortOrder={setSortOrder}
+        />
 
         {isLoading ? (
           errorLoading ? (
@@ -266,8 +281,14 @@ function NewFactForm({ setFacts, setShowForm }) {
   );
 }
 
-function CategoryList({ setCurrentCategory }) {
+function CategoryList({
+  setCurrentCategory,
+  setSortBy,
+  sortOrder,
+  setSortOrder,
+}) {
   const [showOtherCategory, setShowOtherCategory] = useState(false);
+  const [showSortBy, setShowSortBy] = useState(false);
   return (
     <aside>
       <ul>
@@ -279,18 +300,34 @@ function CategoryList({ setCurrentCategory }) {
             All
           </button>
         </li>
-        <li className="category">
-          <button
-            className="btn btn-all-categories"
-            style={{
-              background: "#1f2937",
-              boxShadow: "0 0 10px 2.5px #6b7280",
-            }}
-            onClick={() => setShowOtherCategory(!showOtherCategory)}
-          >
-            {showOtherCategory ? "X close" : "≡ Categories"}
-          </button>
-        </li>
+        {showSortBy ? null : (
+          <li className="category">
+            <button
+              className="btn btn-all-categories"
+              style={{
+                background: "#1f2937",
+                boxShadow: "0 0 7px 2.5px #e5e7eba1",
+              }}
+              onClick={() => setShowOtherCategory(!showOtherCategory)}
+            >
+              {showOtherCategory ? "X close" : "≡ Categories"}
+            </button>
+          </li>
+        )}
+        {showOtherCategory ? null : (
+          <li className="category">
+            <button
+              className="btn btn-all-categories"
+              style={{
+                background: "#1f2937",
+                boxShadow: "0 0 7px 2.5px #e5e7eba1",
+              }}
+              onClick={() => setShowSortBy(!showSortBy)}
+            >
+              {showSortBy ? "X close" : "↑↓ Sort By"}
+            </button>
+          </li>
+        )}
         {showOtherCategory
           ? CATEGORIES.map((cat) => (
               <li key={cat.name} className="category">
@@ -304,6 +341,33 @@ function CategoryList({ setCurrentCategory }) {
               </li>
             ))
           : null}
+        {showSortBy
+          ? SORTBY.map((sort) => (
+              <li key={sort.name} className="category">
+                <button
+                  className="btn btn-category"
+                  style={{ backgroundColor: sort.color }}
+                  onClick={() => setSortBy(sort.value)}
+                >
+                  {sort.name}
+                </button>
+              </li>
+            ))
+          : null}
+        {showSortBy ? (
+          <li className="category">
+            <button
+              className="btn btn-all-categories"
+              style={{
+                background: "#1f2937",
+                boxShadow: "0 0 7px 2.5px #e5e7eba1",
+              }}
+              onClick={() => setSortOrder(!sortOrder)}
+            >
+              {sortOrder ? "Ascending ↓" : "Descending ↑"}
+            </button>
+          </li>
+        ) : null}
       </ul>
     </aside>
   );
