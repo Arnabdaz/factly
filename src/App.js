@@ -1,53 +1,32 @@
-import { useEffect, useState } from "react";
-import supabase from "./supabase";
-import "./style.css";
+import { useEffect, useState } from 'react';
+import supabase from './supabase';
+import './style.css';
 const CATEGORIES = [
-  { name: "technology", color: "#14b8a6" },
-  { name: "science", color: "#3b82f6" },
-  { name: "finance", color: "#8b5cf6" },
-  { name: "society", color: "#db2777" },
-  { name: "entertainment", color: "#ef4444" },
-  { name: "health", color: "#f97316" },
-  { name: "history", color: "#eab308" },
-  { name: "news", color: "#B05B3B" },
+  { name: 'technology', color: '#14b8a6' },
+  { name: 'science', color: '#3b82f6' },
+  { name: 'finance', color: '#8b5cf6' },
+  { name: 'society', color: '#db2777' },
+  { name: 'entertainment', color: '#ef4444' },
+  { name: 'health', color: '#f97316' },
+  { name: 'history', color: '#eab308' },
+  { name: 'news', color: '#B05B3B' },
 ];
 
 const SORTBY = [
-  { name: "creation time", value: "created_at", color: "#3b82f6" },
-  { name: "category", value: "category", color: "#8b5cf6" },
-  { name: "👍 Interesting", value: "votesInteresting", color: "#db2777" },
-  { name: "🤯 Mindblowing", value: "votesMindblowing", color: "#f97316" },
-  { name: "⛔ Incorrect", value: "votesFalse", color: "#eab308" },
+  { name: 'creation time', value: 'created_at', color: '#3b82f6' },
+  { name: 'category', value: 'category', color: '#8b5cf6' },
+  { name: '👍 Interesting', value: 'votesInteresting', color: '#db2777' },
+  { name: '🤯 Mindblowing', value: 'votesMindblowing', color: '#f97316' },
+  { name: '⛔ Incorrect', value: 'votesFalse', color: '#eab308' },
 ];
-
-// function Counter() {
-//   const [count, setCount] = useState(0);
-
-//   return (
-//     <div
-//       style={{
-//         display: "flex",
-//         alignItems: "center",
-//         justifyContent: "center",
-//         marginBottom: "20px",
-//         gap: "50px",
-//       }}
-//     >
-//       <h1>{count}</h1>
-//       <button className="btn btn-large" onClick={() => setCount((x) => x + 1)}>
-//         +1
-//       </button>
-//     </div>
-//   );
-// }
 
 function App() {
   const [showForm, setShowForm] = useState(false); // for toggling forms section
   const [facts, setFacts] = useState([]); // for adding new facts through form section
   const [isLoading, setIsLoading] = useState(false); // for showing loading... logo as long as loading
   const [errorLoading, setErrorLoading] = useState(false); // for showing error in loading
-  const [CurrentCategory, setCurrentCategory] = useState("all"); // for filtering facts according to category
-  const [sortBy, setSortBy] = useState("created_at"); // for sorting facts according to selected sort
+  const [CurrentCategory, setCurrentCategory] = useState('all'); // for filtering facts according to category
+  const [sortBy, setSortBy] = useState('created_at'); // for sorting facts according to selected sort
   const [sortOrder, setSortOrder] = useState(false); // for sorting facts as ascending or descending order
 
   useEffect(
@@ -55,10 +34,10 @@ function App() {
       setIsLoading(false);
 
       async function getFacts() {
-        let query = supabase.from("facts").select("*");
+        let query = supabase.from('facts').select('*');
 
-        if (CurrentCategory !== "all") {
-          query = query.eq("category", CurrentCategory); // add current category filter
+        if (CurrentCategory !== 'all') {
+          query = query.eq('category', CurrentCategory); // add current category filter
         }
 
         query = query.order(sortBy, { ascending: sortOrder }); // add sortby and sort order filter
@@ -135,7 +114,7 @@ function ErrorInLoading() {
 }
 
 function Header({ setShowForm, showForm }) {
-  const appTitle = "Factly";
+  const appTitle = 'Factly';
 
   return (
     <header className="header">
@@ -162,7 +141,7 @@ function Header({ setShowForm, showForm }) {
         className="btn btn-large btn-open"
         onClick={() => setShowForm(!showForm)}
       >
-        {showForm ? "close" : "share a fact"}
+        {showForm ? 'close' : 'share a fact'}
       </button>
     </header>
   );
@@ -175,15 +154,15 @@ function isValidHttpUrl(string) {
   } catch (_) {
     return false;
   }
-  return url.protocol === "http:" || url.protocol === "https:";
+  return url.protocol === 'http:' || url.protocol === 'https:';
 }
 
 function NewFactForm({ setFacts, setShowForm }) {
-  const [text, setText] = useState("");
-  const [source, setSource] = useState("");
-  const [category, setCategory] = useState("");
+  const [text, setText] = useState('');
+  const [source, setSource] = useState('');
+  const [category, setCategory] = useState('');
   const textLength = text.length;
-  const [valid, setValid] = useState("fact-form");
+  const [valid, setValid] = useState('fact-form');
   const [isUploading, setIsUploading] = useState(false);
 
   async function handleSubmit(e) {
@@ -196,22 +175,10 @@ function NewFactForm({ setFacts, setShowForm }) {
     if (text && isValidHttpUrl(source) && category && textLength > 0) {
       console.log(`valid`);
 
-      // 3. create a new fact object
-      // const newFact = {
-      //   id: Math.floor(Math.random() * 100000),
-      //   text,
-      //   source,
-      //   category,
-      //   votesInteresting: 0,
-      //   votesMindblowing: 0,
-      //   votesFalse: 0,
-      //   createdIn: new Date().getFullYear(),
-      // };
-
       // 3. upload a fact to supabase and receive the new fact object
       setIsUploading(true);
       const { data: newFact, error } = await supabase
-        .from("facts")
+        .from('facts')
         .insert([{ text, source, category }])
         .select();
 
@@ -222,25 +189,25 @@ function NewFactForm({ setFacts, setShowForm }) {
 
       // 5. Reset input fields
 
-      setText("");
-      setSource("");
-      setCategory("");
+      setText('');
+      setSource('');
+      setCategory('');
 
       // 6. Close the form
       if (error)
         alert(
-          "⚠️ there was an error uploading the fact to the database! 🙏 Please try again after reloading the page. "
+          '⚠️ there was an error uploading the fact to the database! 🙏 Please try again after reloading the page. '
         );
       else setShowForm(false);
     } else {
       if (text) {
         if (isValidHttpUrl(source)) {
-          setValid("fact-form not-valid fact-category");
+          setValid('fact-form not-valid fact-category');
         } else {
-          setValid("fact-form not-valid fact-source");
+          setValid('fact-form not-valid fact-source');
         }
       } else {
-        setValid("fact-form not-valid fact-text");
+        setValid('fact-form not-valid fact-text');
       }
     }
   }
@@ -295,7 +262,7 @@ function CategoryList({
         <li className="category">
           <button
             className="btn btn-all-categories"
-            onClick={() => setCurrentCategory("all")}
+            onClick={() => setCurrentCategory('all')}
           >
             All
           </button>
@@ -305,12 +272,12 @@ function CategoryList({
             <button
               className="btn btn-all-categories"
               style={{
-                background: "#1f2937",
-                boxShadow: "0 0 7px 2.5px #e5e7eba1",
+                background: '#1f2937',
+                boxShadow: '0 0 7px 2.5px #e5e7eba1',
               }}
               onClick={() => setShowOtherCategory(!showOtherCategory)}
             >
-              {showOtherCategory ? "X close" : "≡ Categories"}
+              {showOtherCategory ? 'X close' : '≡ Categories'}
             </button>
           </li>
         )}
@@ -319,12 +286,12 @@ function CategoryList({
             <button
               className="btn btn-all-categories"
               style={{
-                background: "#1f2937",
-                boxShadow: "0 0 7px 2.5px #e5e7eba1",
+                background: '#1f2937',
+                boxShadow: '0 0 7px 2.5px #e5e7eba1',
               }}
               onClick={() => setShowSortBy(!showSortBy)}
             >
-              {showSortBy ? "X close" : "↑↓ Sort By"}
+              {showSortBy ? 'X close' : '↑↓ Sort By'}
             </button>
           </li>
         )}
@@ -359,12 +326,12 @@ function CategoryList({
             <button
               className="btn btn-all-categories"
               style={{
-                background: "#1f2937",
-                boxShadow: "0 0 7px 2.5px #e5e7eba1",
+                background: '#1f2937',
+                boxShadow: '0 0 7px 2.5px #e5e7eba1',
               }}
               onClick={() => setSortOrder(!sortOrder)}
             >
-              {sortOrder ? "Ascending ↓" : "Descending ↑"}
+              {sortOrder ? 'Ascending ↓' : 'Descending ↑'}
             </button>
           </li>
         ) : null}
@@ -403,9 +370,9 @@ function Fact({ fact, setFacts }) {
   async function handleVotes(columnName) {
     setIsUpdating(true);
     const { data: updatedVotes, error } = await supabase
-      .from("facts")
+      .from('facts')
       .update({ [columnName]: fact[columnName] + 1 })
-      .eq("id", fact.id)
+      .eq('id', fact.id)
       .select();
 
     if (!error)
@@ -434,18 +401,18 @@ function Fact({ fact, setFacts }) {
       </span>
       <div className="vote-buttons">
         <button
-          onClick={() => handleVotes("votesInteresting")}
+          onClick={() => handleVotes('votesInteresting')}
           disabled={isUpdating}
         >
-          👍 {fact.votesInteresting}{" "}
+          👍 {fact.votesInteresting}{' '}
         </button>
         <button
-          onClick={() => handleVotes("votesMindblowing")}
+          onClick={() => handleVotes('votesMindblowing')}
           disabled={isUpdating}
         >
           🤯 {fact.votesMindblowing}
         </button>
-        <button onClick={() => handleVotes("votesFalse")} disabled={isUpdating}>
+        <button onClick={() => handleVotes('votesFalse')} disabled={isUpdating}>
           ⛔ {fact.votesFalse}
         </button>
       </div>
