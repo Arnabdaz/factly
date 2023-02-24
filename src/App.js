@@ -60,8 +60,6 @@ function App() {
         <NewFactForm setFacts={setFacts} setShowForm={setShowForm} />
       ) : null}
 
-      {/* <Counter /> */}
-
       <main className="main">
         <CategoryList
           setCurrentCategory={setCurrentCategory}
